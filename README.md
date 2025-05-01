@@ -10,17 +10,17 @@ tu test [OPTIONS]
 ```                                                                                      
 
 #### Options
-| Option                    | Short | Close            | Type    | Description                                    |
-| ------------------------- | ----- | ---------------- | ------- | ---------------------------------------------- |
-| │ --tracker-provider-urls | -u    |                  | TEXT    | Tracker provider urls                          |
-| │ --tracker-provider-file | -f    |                  | PATH    | Tracker provider file [default: None]          |
-| │ --output-txt-dir        | -o    |                  | PATH    | Output directory for txt files [default: None] |
-| │ --output-json-path      |       |                  | PATH    | Output path for json file [default: None]      |
-| │ --format-json           |       | --no-format-json |         | Format json file [default: no-format-json]     |
-| │ --sort                  |       | --no-sort        |         | Sort output data [default: sort]               |
-| │ --show-failed           |       |                  |         | Show failed tasks                              |
-| │ --retry-times           | -r    |                  | INTEGER | Retry times for failed tasks [default: 3]      |
-| │ --timeout               | -t    |                  | FLOAT   | Timeout for each task [default: 10.0]          |
+| Option                  | Short | Close            | Type    | Description                                    |
+| ----------------------- | ----- | ---------------- | ------- | ---------------------------------------------- |
+| --tracker-provider-urls | -u    |                  | TEXT    | Tracker provider urls                          |
+| --tracker-provider-file | -f    |                  | PATH    | Tracker provider file [default: None]          |
+| --output-txt-dir        | -o    |                  | PATH    | Output directory for txt files [default: None] |
+| --output-json-path      |       |                  | PATH    | Output path for json file [default: None]      |
+| --format-json           |       | --no-format-json |         | Format json file [default: no-format-json]     |
+| --sort                  |       | --no-sort        |         | Sort output data [default: sort]               |
+| --show-failed           |       |                  |         | Show failed tasks                              |
+| --retry-times           | -r    |                  | INTEGER | Retry times for failed tasks [default: 3]      |
+| --timeout               | -t    |                  | FLOAT   | Timeout for each task [default: 10.0]          |
 
 ### Test trackers by qbittorrent web api
 ```bash
@@ -28,10 +28,10 @@ tu client-test [OPTIONS] URL TORRENT
 ```
 
 #### Arguments
-| Argument     | type | Description                                              |
-| ------------ | ---- | -------------------------------------------------------- |
-| *    url     | TEXT | Url of the qbittorrent web ui [default: None] [required] |
-| *    torrent | TEXT | Torrent name or hash [default: None] [required]          |
+| Argument  | type | Description                                              |
+| --------- | ---- | -------------------------------------------------------- |
+| * url     | TEXT | Url of the qbittorrent web ui [default: None] [required] |
+| * torrent | TEXT | Torrent name or hash [default: None] [required]          |
 
 #### Options
 | Option             | Short | Close       | Type  | Description                                                                             |
