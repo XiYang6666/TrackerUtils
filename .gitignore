@@ -1,0 +1,8 @@
+**/__pycache__
+/.pdm-build
+/.pdm-python
+/.venv
+/.vscode
+/data
+/dist
+/output

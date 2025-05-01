@@ -1,0 +1,30 @@
+[project]
+name = "tracker-utils"
+version = "0.1.0"
+description = "A Python CLI tool for testing trackers"
+keywords = ["tracker", "utils", "cli", "tu"]
+authors = [{ name = "XiYang6666", email = "1782356858@qq.com" }]
+dependencies = [
+    "aiodns>=3.2.0",
+    "rich>=14.0.0",
+    "httpx[http2]>=0.28.1",
+    "qbittorrent-api>=2025.4.1",
+    "typer>=0.15.3",
+]
+requires-python = ">=3.9"
+readme = "README.md"
+license = { text = "MIT" }
+
+[project.scripts]
+tu = "tracker_tester.__main__:main"
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pdm.scripts]
+dev = "python -m src.tracker_tester"
+
+[tool.ruff]
+line-length = 150
+extend-select = ["I"]
