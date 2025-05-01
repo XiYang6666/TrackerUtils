@@ -1,6 +1,6 @@
 # TrackerUtils
 
-A Python CLI tool for testing trackers
+A Python CLI tool for testing trackers powered by [typer](https://github.com/fastapi/typer)
 
 ## Usage
 

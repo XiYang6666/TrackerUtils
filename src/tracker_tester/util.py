@@ -1,8 +1,11 @@
 import inspect
+import re
 from dataclasses import dataclass
+from datetime import timedelta
 from pathlib import Path
 from typing import Any, Callable, Coroutine, Iterable, Optional
 
+import click
 import typer
 from rich import print
 from rich.progress import BarColumn, Progress, TaskID, TextColumn, TimeElapsedColumn, TimeRemainingColumn
@@ -184,16 +187,16 @@ def add_config_options(hides: list[ConfigKeys] = [], defaults: dict[ConfigKeys, 
         @patch_params(
             PatchParamsOption("show_failed", annotation=bool),
             PatchParamsOption("retry_times", annotation=int),
-            PatchParamsOption("timeout", annotation=float),
+            PatchParamsOption("timeout", annotation=timedelta),
         )
         def config_func(
             show_failed: Optional[bool] = typer.Option(False, "--show-failed", help="Show failed tasks"),
             retry_times: Optional[int] = typer.Option(3, "--retry-times", "-r", help="Retry times for failed tasks"),
-            timeout: Optional[float] = typer.Option(10.0, "--timeout", "-t", help="Timeout for each task"),
+            timeout: Optional[timedelta] = typer.Option("10s", "--timeout", "-t", help="Timeout for each task", click_type=timedelta_parser),
         ):
             config.show_failed = show_failed if show_failed is not None else config.show_failed
             config.retry_times = retry_times if retry_times is not None else config.retry_times
-            config.timeout = timeout if timeout is not None else config.timeout
+            config.timeout = timeout.total_seconds() if timeout is not None else config.timeout
 
         for k, v in defaults.items():
             config_func = patch_param(k, default=v)(config_func)
@@ -201,3 +204,27 @@ def add_config_options(hides: list[ConfigKeys] = [], defaults: dict[ConfigKeys, 
         return merge_params(config_func)(func)
 
     return decorator
+
+
+MILLISECOND_PATTERN = re.compile(r"^(?:\d+(?:.\d*)?|\.\d+)ms$")
+SECOND_PATTEN = re.compile(r"^(?:\d+(?:.\d*)?|\.\d+)s$")
+MINUTE_PATTERN = re.compile(r"^(?:\d+(?:.\d*)?|\.\d+)m$")
+HOUR_PATTERN = re.compile(r"^(?:\d+(?:.\d*)?|\.\d+)h$")
+
+
+class TimedeltaParser(click.ParamType):
+    name = "timedelta"
+
+    def convert(self, value: str, param, ctx: click.Context) -> timedelta:
+        if MILLISECOND_PATTERN.match(value):
+            return timedelta(milliseconds=float(value[:-2]))
+        if SECOND_PATTEN.match(value):
+            return timedelta(seconds=float(value[:-1]))
+        if MINUTE_PATTERN.match(value):
+            return timedelta(minutes=float(value[:-1]))
+        if HOUR_PATTERN.match(value):
+            return timedelta(hours=float(value[:-1]))
+        return timedelta(seconds=float(value))
+
+
+timedelta_parser = TimedeltaParser()

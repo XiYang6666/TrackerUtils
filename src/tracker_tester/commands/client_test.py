@@ -1,4 +1,5 @@
 import asyncio
+from datetime import timedelta
 from pathlib import Path
 from typing import List, Optional
 
@@ -7,7 +8,7 @@ import typer
 
 from ..app import app
 from ..functions.client_test import BTClientOptions, client_test
-from ..util import add_config_options, read_lines
+from ..util import add_config_options, read_lines, timedelta_parser
 
 
 def final_check(ctx: click.Context):
@@ -35,7 +36,7 @@ def tracker_file_checker(ctx: click.Context, value: Optional[Path]):
 @app.command("client-test", help="Test Trackers by a qbittorrent client")
 @add_config_options(
     hides=["retry_times"],
-    defaults={"timeout": typer.Option(30 * 60.0, "--timeout", "-t", help="Timeout in seconds for all trackers")},
+    defaults={"timeout": typer.Option("5m", "--timeout", "-t", help="Timeout for contact all trackers", click_type=timedelta_parser)},
 )
 def cmd_client_test(
     url: str = typer.Argument(..., help="Url of the qbittorrent web ui"),
@@ -69,7 +70,7 @@ def cmd_client_test(
         help="Password for the qbittorrent client",
     ),
     output_path: Path = typer.Option(
-        None,
+        ...,
         "--output-path",
         "-o",
         help="Path to the output file",
@@ -79,11 +80,18 @@ def cmd_client_test(
         "--fast-mode/--slow-mode",
         help="Connection failure if tracker is updating with errors in Fast mode",
     ),
-    polling_interval: float = typer.Option(
-        3.0,
+    polling_interval: timedelta = typer.Option(
+        "100ms",
         "--polling-interval",
         "-i",
         help="Interval in seconds between tracker contact attempts",
+        click_type=timedelta_parser,
+    ),
+    yes_all: bool = typer.Option(
+        False,
+        "--yes-all",
+        "-y",
+        help="Answer yes to all prompts",
     ),
 ):
     urls = trackers_urls
@@ -95,6 +103,7 @@ def cmd_client_test(
             BTClientOptions(url=url, user=username, pwd=password, torrent=torrent),
             output_path,
             fast_mode=fast_mode,
-            polling_interval=polling_interval,
+            polling_interval=polling_interval.total_seconds(),
+            yes_all=yes_all,
         )
     )
