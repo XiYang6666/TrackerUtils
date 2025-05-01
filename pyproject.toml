@@ -11,7 +11,8 @@ dependencies = [
     "qbittorrent-api>=2025.4.1",
     "typer>=0.15.3",
 ]
-requires-python = ">=3.9"
+repository = "https://github.com/XiYang6666/TrackerUtils"
+requires-python = ">=3.12"
 readme = "README.md"
 license = { text = "MIT" }
 
