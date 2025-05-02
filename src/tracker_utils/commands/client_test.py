@@ -41,7 +41,7 @@ def tracker_file_checker(ctx: click.Context, value: Optional[Path]):
 )
 @hide_exceptions_factory
 @add_config_options(
-    hides=["retry_times"],
+    hides=["retry_times","max_tasks"],
     defaults={"timeout": typer.Option("5m", "--timeout", "-t", help="Timeout for contact all trackers", click_type=timedelta_parser)},
 )
 def cmd_client_test(

@@ -25,12 +25,14 @@ def add_config_options(hides: list[ConfigKeys] = [], defaults: dict[ConfigKeys, 
             show_failed: Optional[bool] = typer.Option(False, "--show-failed", help="Show failed tasks"),
             rich_output: Optional[bool] = typer.Option(True, "--rich-output/--plain-output", help="Use rich output"),
             retry_times: Optional[int] = typer.Option(3, "--retry-times", "-r", help="Retry times for failed tasks"),
+            max_tasks: Optional[int] = typer.Option(500, "--max-concurrency", "-x", help="Max concurrency for tasks"),
             timeout: Optional[timedelta] = typer.Option("10s", "--timeout", "-t", help="Timeout for each task", click_type=timedelta_parser),
             debug: Optional[bool] = typer.Option(False, "--debug", help="Debug mode"),
         ):
             config.show_failed = show_failed if show_failed is not None else config.show_failed
             config.rich_output = rich_output if rich_output is not None else config.rich_output
             config.retry_times = retry_times if retry_times is not None else config.retry_times
+            config.max_tasks = max_tasks if max_tasks is not None else config.max_tasks
             config.timeout = timeout.total_seconds() if timeout is not None else config.timeout
             config.debug = debug if debug is not None else config.debug
 

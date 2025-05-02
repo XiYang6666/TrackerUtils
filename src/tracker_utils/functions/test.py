@@ -10,7 +10,7 @@ import httpx
 
 from .. import config
 from ..utils.base import create_rate_str, if_sort, write_lines
-from ..utils.decorators import retry_factory
+from ..utils.decorators import retry_factory, with_semaphone
 from ..utils.functions import load_all_tracker, show_test_result
 from ..utils.output import create_progress, fail, print
 
@@ -33,7 +33,9 @@ def separate_trackers_by_protocol(trackers: list[str]) -> dict[str, list[str]]:
 async def test_http_trackers(trackers: list[str]):
     progress = create_progress()
     bar = progress.add_task("Testing http(s) trackers", total=len(trackers))
+    semaphone = asyncio.Semaphore(config.max_tasks)
 
+    @with_semaphone(semaphone)
     @retry_factory(progress, bar)
     async def try_connect_http_tracker(url: str) -> Optional[str]:
         try:
@@ -58,7 +60,9 @@ async def test_http_trackers(trackers: list[str]):
 async def test_udp_trackers(trackers: list[str]):
     progress = create_progress()
     bar = progress.add_task("Testing udp trackers", total=len(trackers))
+    semaphone = asyncio.Semaphore(config.max_tasks)
 
+    @with_semaphone(semaphone)
     @retry_factory(progress, bar)
     async def try_resolve_udp_tracker(url: str):
         parsed = urlparse(url)
