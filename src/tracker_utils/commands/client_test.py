@@ -41,8 +41,8 @@ def tracker_file_checker(ctx: click.Context, value: Optional[Path]):
 )
 @hide_exceptions_factory
 @add_config_options(
-    hides=["retry_times","max_tasks"],
-    defaults={"timeout": typer.Option("5m", "--timeout", "-t", help="Timeout for contact all trackers", click_type=timedelta_parser)},
+    hides=["retry_times", "max_tasks"],
+    defaults={"timeout": typer.Option("2m", "--timeout", "-t", help="Timeout for contact all trackers", click_type=timedelta_parser)},
 )
 def cmd_client_test(
     url: str = typer.Argument(..., help="Url of the qbittorrent web ui"),
@@ -81,12 +81,6 @@ def cmd_client_test(
         envvar="QBITTORRENT_PASSWORD",
         help="Password for the qbittorrent client",
     ),
-    fast_mode: bool = typer.Option(
-        False,
-        "--fast-mode",
-        "-F",
-        help="Connection failure if tracker is updating with errors in Fast mode",
-    ),
     polling_interval: timedelta = typer.Option(
         "100ms",
         "--polling-interval",
@@ -94,11 +88,17 @@ def cmd_client_test(
         help="Interval in seconds between tracker contact attempts",
         click_type=timedelta_parser,
     ),
-    yes_all: bool = typer.Option(
+    batch_size: int = typer.Option(
+        20,
+        "--batch-size",
+        "-b",
+        help="Number of trackers to test in each batch",
+    ),
+    fast_mode: bool = typer.Option(
         False,
-        "--yes-all",
-        "-y",
-        help="Answer yes to all prompts",
+        "--fast-mode",
+        "-F",
+        help="Connection failure if tracker is updating with errors in Fast mode",
     ),
 ):
     urls = trackers_urls
@@ -109,8 +109,8 @@ def cmd_client_test(
             urls,
             ClientTestOptions(url=url, user=username, pwd=password, torrent=torrent),
             output_path,
-            fast_mode=fast_mode,
             polling_interval=polling_interval.total_seconds(),
-            yes_all=yes_all,
+            batch_size=batch_size,
+            fast_mode=fast_mode,
         )
     )
