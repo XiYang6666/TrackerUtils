@@ -2,9 +2,13 @@ from importlib.metadata import version
 
 import typer
 
-from ..app import app
 from ..utils.commands import add_config_options
 from ..utils.output import print
+from . import (
+    client_test,
+    set_trackers,
+    test,
+)
 
 
 def version_callback(value: bool):
@@ -14,14 +18,11 @@ def version_callback(value: bool):
         raise typer.Exit()
 
 
-@app.callback()
-@add_config_options(hides=["show_failed", "retry_times", "timeout"])
-def main(version: bool = typer.Option(False, "--version", "-v", help="Show version and exit.", callback=version_callback)): ...
+def load_commands(app: typer.Typer):
+    @app.callback()
+    @add_config_options(hides=["show_failed", "retry_times", "timeout"])
+    def main(version: bool = typer.Option(False, "--version", "-v", help="Show version and exit.", callback=version_callback)): ...
 
-
-def load_commands():
-    from . import (  # noqa: I001
-        test,  # noqa: F401
-        client_test,  # noqa: F401
-        set_trackers,  # noqa: F401
-    )
+    app.add_typer(test.cmd)
+    app.add_typer(client_test.cmd)
+    app.add_typer(set_trackers.cmd)
