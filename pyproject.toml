@@ -16,7 +16,7 @@ readme = "README.md"
 license = { text = "MIT" }
 
 [project.scripts]
-tu = "tracker_tester.__main__:main"
+tu = "tracker_utils.__main__:main"
 
 [project.urls]
 repository = "https://github.com/XiYang6666/TrackerUtils"
@@ -27,7 +27,7 @@ requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [tool.pdm.scripts]
-dev = "python -m src.tracker_tester"
+dev = "python -m src.tracker_utils"
 
 [tool.ruff]
 line-length = 150
