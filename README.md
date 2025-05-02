@@ -67,4 +67,5 @@ tu set-trackers [OPTIONS] URL
 | --password      | -p    | TEXT | Password for the qbittorrent client [env var: QBITTORRENT_PASSWORD] [default: None] |
 | --trackers-urls | -t    | TEXT | List of trackers urls                                                               |
 | --tackers-file  | -f    | PATH | Path to the file containing trackers [default: None]                                |
+| --append        | -a    |      | Append trackers to existing trackers                                                |
 | --help          |       |      | Show this message and exit.                                                         |

@@ -67,4 +67,5 @@ tu set-trackers [选项] URL
 | --password      | -p   | TEXT | qBittorrent 密码 [环境变量: QBITTORRENT_PASSWORD] [默认: 无]   |
 | --trackers-urls | -t   | TEXT | Tracker URLs 列表                                              |
 | --tackers-file  | -f   | PATH | Tracker 列表文件路径 [默认: 无]                                |
+| --append        | -a   |      | 追加模式，不覆盖已有 tracker                                   |
 | --help          |      |      | 显示帮助信息                                                   |

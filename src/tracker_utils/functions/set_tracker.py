@@ -16,6 +16,7 @@ class BtClientOptions:
 def set_tracker(
     tracker_urls: list[str],
     client_options: BtClientOptions,
+    append: bool = False,
 ):
     # 连接qbittorrent客户端
     print(f"Connecting to qBittorrent web api (url: {client_options.url}, user: {client_options.user})...")
@@ -26,7 +27,8 @@ def set_tracker(
     progress.start()
     bar = progress.add_task("Setting trackers", total=len(all_torrents))
     for torrent in client.torrents.info.all():
-        client.torrents_remove_trackers(torrent.hash, [t.url for t in torrent.trackers])
+        if not append:
+            client.torrents_remove_trackers(torrent.hash, [t.url for t in torrent.trackers])
         client.torrents_add_trackers(torrent.hash, tracker_urls)
         progress.update(bar, advance=1)
     progress.stop()

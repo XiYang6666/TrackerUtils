@@ -37,6 +37,12 @@ def cmd_set_trackers(
         "-f",
         help="Path to the file containing trackers",
     ),
+    append: bool = typer.Option(
+        False,
+        "--append",
+        "-a",
+        help="Append trackers to existing trackers",
+    ),
 ):
     urls = trackers_urls
     if tackers_file:
@@ -44,4 +50,5 @@ def cmd_set_trackers(
     set_tracker(
         urls,
         BtClientOptions(url=url, user=username, pwd=password),
+        append,
     )
