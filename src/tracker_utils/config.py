@@ -7,6 +7,7 @@ show_failed: bool = False
 rich_output: bool = True
 retry_times: int = 3
 timeout: float = 10.0
+debug: bool = False
 
 
-type ConfigKeys = Literal["show_failed"] | Literal["rich_output"] | Literal["retry_times"] | Literal["timeout"]
+type ConfigKeys = Literal["show_failed"] | Literal["rich_output"] | Literal["retry_times"] | Literal["timeout"] | Literal["debug"]

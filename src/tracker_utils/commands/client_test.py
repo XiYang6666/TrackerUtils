@@ -9,7 +9,7 @@ import typer
 from ..app import app
 from ..functions.client_test import ClientTestOptions, client_test
 from ..utils.base import read_lines, timedelta_parser
-from ..utils.commands import add_config_options
+from ..utils.commands import add_config_options, hide_exceptions_factory
 
 
 def final_check(ctx: click.Context):
@@ -39,6 +39,7 @@ def tracker_file_checker(ctx: click.Context, value: Optional[Path]):
     help="Test Trackers by a qbittorrent client",
     rich_help_panel="Tracker Tester",
 )
+@hide_exceptions_factory
 @add_config_options(
     hides=["retry_times"],
     defaults={"timeout": typer.Option("5m", "--timeout", "-t", help="Timeout for contact all trackers", click_type=timedelta_parser)},

@@ -15,7 +15,7 @@ def version_callback(value: bool):
 
 def load_commands():
     @app.callback()
-    @add_config_options(hides=["show_failed", "rich_output", "retry_times", "timeout"])
+    @add_config_options(hides=["show_failed", "rich_output", "retry_times", "timeout", "debug"])
     def main(version: bool = typer.Option(False, "--version", "-v", help="Show version and exit.", callback=version_callback)): ...
 
     from . import (  # noqa: I001
