@@ -4,10 +4,9 @@ from pathlib import Path
 from typing import Optional
 
 from qbittorrentapi import Client, Tracker  # 你妈的类型能不能好好写?
-from rich import print
 
 from .. import config
-from ..util import create_progress, create_rate_str, fail, write_lines
+from ..util import create_progress, create_rate_str, fail, print, write_lines
 
 __all__ = ["ClientTestOptions", "client_test"]
 

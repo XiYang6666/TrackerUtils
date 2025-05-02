@@ -7,10 +7,9 @@ from urllib.parse import urlparse
 
 import aiodns
 import httpx
-from rich import print
 
 from .. import config
-from ..util import create_progress, create_rate_str, fail, if_sort, read_lines, retry_factory, write_lines
+from ..util import create_progress, create_rate_str, fail, if_sort, print, read_lines, retry_factory, write_lines
 
 __all__ = ["test"]
 
