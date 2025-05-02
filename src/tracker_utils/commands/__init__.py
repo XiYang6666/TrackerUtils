@@ -23,6 +23,15 @@ def load_commands(app: typer.Typer):
     @add_config_options(hides=["show_failed", "retry_times", "timeout"])
     def main(version: bool = typer.Option(False, "--version", "-v", help="Show version and exit.", callback=version_callback)): ...
 
-    app.add_typer(test.cmd)
-    app.add_typer(client_test.cmd)
-    app.add_typer(set_trackers.cmd)
+    app.add_typer(
+        test.cmd,
+        rich_help_panel="Tracker Tester",
+    )
+    app.add_typer(
+        client_test.cmd,
+        rich_help_panel="Tracker Tester",
+    )
+    app.add_typer(
+        set_trackers.cmd,
+        rich_help_panel="Bt Client Utils",
+    )

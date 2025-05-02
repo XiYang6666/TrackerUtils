@@ -10,7 +10,6 @@ from ..utils.base import read_lines
 cmd = typer.Typer(
     name="set-trackers",
     help="Set trackers for qbittorrent client",
-    rich_help_panel="Client Utils",
 )
 
 

@@ -13,7 +13,6 @@ from ..utils.commands import add_config_options
 cmd = typer.Typer(
     name="client-test",
     help="Test Trackers by a qbittorrent client",
-    rich_help_panel="Tracker Tester",
 )
 
 

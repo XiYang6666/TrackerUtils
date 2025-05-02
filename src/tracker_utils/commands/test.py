@@ -12,7 +12,6 @@ from ..utils.commands import add_config_options
 cmd = typer.Typer(
     name="test",
     help="Test trackers",
-    rich_help_panel="Tracker Tester",
 )
 
 
