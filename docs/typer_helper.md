@@ -9,9 +9,6 @@ $ tu [OPTIONS] COMMAND [ARGS]...
 **Options**:
 
 * `-v, --version`: Show version and exit.
-* `--rich-output / --plain-output`: Use rich output  [default: rich-output]
-* `--install-completion`: Install completion for the current shell.
-* `--show-completion`: Show completion for the current shell, to copy it or customize the installation.
 * `--help`: Show this message and exit.
 
 **Commands**:
@@ -27,7 +24,7 @@ Test trackers
 **Usage**:
 
 ```console
-$ tu test [OPTIONS] COMMAND [ARGS]...
+$ tu test [OPTIONS]
 ```
 
 **Options**:
@@ -51,7 +48,7 @@ Test Trackers by a qbittorrent client
 **Usage**:
 
 ```console
-$ tu client-test [OPTIONS] URL TORRENT COMMAND [ARGS]...
+$ tu client-test [OPTIONS] URL TORRENT
 ```
 
 **Arguments**:
@@ -81,7 +78,7 @@ Set trackers for qbittorrent client
 **Usage**:
 
 ```console
-$ tu set-trackers [OPTIONS] URL COMMAND [ARGS]...
+$ tu set-trackers [OPTIONS] URL
 ```
 
 **Arguments**:

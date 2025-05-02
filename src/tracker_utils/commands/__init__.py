@@ -2,12 +2,8 @@ from importlib.metadata import version
 
 import typer
 
+from ..app import app
 from ..utils.commands import add_config_options
-from . import (
-    client_test,
-    set_trackers,
-    test,
-)
 
 
 def version_callback(value: bool):
@@ -17,20 +13,13 @@ def version_callback(value: bool):
         raise typer.Exit()
 
 
-def load_commands(app: typer.Typer):
+def load_commands():
     @app.callback()
     @add_config_options(hides=["show_failed", "rich_output", "retry_times", "timeout"])
     def main(version: bool = typer.Option(False, "--version", "-v", help="Show version and exit.", callback=version_callback)): ...
 
-    app.add_typer(
-        test.cmd,
-        rich_help_panel="Tracker Tester",
-    )
-    app.add_typer(
-        client_test.cmd,
-        rich_help_panel="Tracker Tester",
-    )
-    app.add_typer(
-        set_trackers.cmd,
-        rich_help_panel="Bt Client Utils",
+    from . import (  # noqa: I001
+        test,  # noqa: F401
+        client_test,  # noqa: F401
+        set_trackers,  # noqa: F401
     )

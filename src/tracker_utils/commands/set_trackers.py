@@ -4,16 +4,16 @@ from typing import List, Optional
 
 import typer
 
+from ..app import app
 from ..functions.set_tracker import BtClientOptions, set_tracker
 from ..utils.base import read_lines
 
-cmd = typer.Typer(
+
+@app.command(
     name="set-trackers",
     help="Set trackers for qbittorrent client",
+    rich_help_panel="Bt Client Utils",
 )
-
-
-@cmd.callback()
 def cmd_set_trackers(
     url: str = typer.Argument(..., help="Url of the qbittorrent web ui"),
     username: Optional[str] = typer.Option(

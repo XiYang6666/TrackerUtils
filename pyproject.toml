@@ -16,7 +16,7 @@ readme = "README.md"
 license = { text = "MIT" }
 
 [project.scripts]
-tu = "tracker_utils.app:app"
+tu = "tracker_utils.cli:app"
 
 [project.urls]
 repository = "https://github.com/XiYang6666/TrackerUtils"
@@ -28,7 +28,7 @@ build-backend = "pdm.backend"
 
 [tool.pdm.scripts]
 dev = "python -m src.tracker_utils"
-build-docs = "typer tracker_utils.app utils docs --output docs/typer_helper.md --name tu --title TrackerUtils"
+build-docs = "typer tracker_utils.cli utils docs --output docs/typer_helper.md --name tu --title TrackerUtils"
 
 [tool.ruff]
 line-length = 150

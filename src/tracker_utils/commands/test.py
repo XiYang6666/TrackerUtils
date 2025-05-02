@@ -5,14 +5,10 @@ from typing import List, Optional
 import click
 import typer
 
+from ..app import app
 from ..functions.test import test
 from ..utils.base import read_lines
 from ..utils.commands import add_config_options
-
-cmd = typer.Typer(
-    name="test",
-    help="Test trackers",
-)
 
 
 def final_check(ctx: click.Context):
@@ -37,7 +33,11 @@ def provider_file_checker(ctx: click.Context, value: Optional[Path]):
     return value
 
 
-@cmd.callback()
+@app.command(
+    name="test",
+    help="Test trackers",
+    rich_help_panel="Tracker Tester",
+)
 @add_config_options()
 def cmd_test(
     tracker_provider_urls: List[str] = typer.Option(
