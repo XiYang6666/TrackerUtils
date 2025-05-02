@@ -41,12 +41,18 @@ def tracker_file_checker(ctx: click.Context, value: Optional[Path]):
 def cmd_client_test(
     url: str = typer.Argument(..., help="Url of the qbittorrent web ui"),
     torrent: str = typer.Argument(..., help="Torrent name or hash"),
+    output_path: Path = typer.Option(
+        ...,
+        "--output-path",
+        "-o",
+        help="Path to the output file",
+    ),
     trackers_urls: List[str] = typer.Option(
         [],
         "--trackers-urls",
         "-t",
-        help="List of trackers urls",
         callback=tracker_url_checker,
+        help="List of trackers urls",
     ),
     tackers_file: Optional[Path] = typer.Option(
         None,
@@ -69,15 +75,10 @@ def cmd_client_test(
         envvar="QBITTORRENT_PASSWORD",
         help="Password for the qbittorrent client",
     ),
-    output_path: Path = typer.Option(
-        ...,
-        "--output-path",
-        "-o",
-        help="Path to the output file",
-    ),
     fast_mode: bool = typer.Option(
         False,
-        "--fast-mode/--slow-mode",
+        "--fast-mode",
+        "-F",
         help="Connection failure if tracker is updating with errors in Fast mode",
     ),
     polling_interval: timedelta = typer.Option(

@@ -16,11 +16,14 @@ colored_console = Console(color_system="auto")
 plain_console = Console(color_system=None)
 
 
-def print(s: str):
+def get_console():
     if config.rich_output:
-        colored_console.print(s)
-    else:
-        plain_console.print(s)
+        return colored_console
+    return plain_console
+
+
+def print(s: str):
+    get_console().print(s)
 
 
 def fail(s: str):
@@ -50,6 +53,7 @@ def create_progress() -> Progress:
         TextColumn("[progress.completed]{task.completed}/{task.total}"),
         TimeRemainingColumn(),
         TimeElapsedColumn(),
+        console=get_console(),
     )
 
 

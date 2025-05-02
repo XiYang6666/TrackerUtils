@@ -44,9 +44,9 @@ async def client_test(
     # 寻找测试种子
     test_torrent = get_torrent(client, client_options.torrent)
     if test_torrent is None:
-        print(f"Torrent {client_options.torrent} not found in {client_options.url}.")
+        print(f"Torrent “{client_options.torrent}” not found in “{client_options.url}”.")
         return
-    print(f"Found test torrent: {test_torrent.name}({test_torrent.hash})")
+    print(f"Found test torrent: “{test_torrent.name}”({test_torrent.hash})")
 
     # 清除原有的所有 tracker
     old_trackers = [t.url for t in test_torrent.trackers]
@@ -57,7 +57,7 @@ async def client_test(
             test_torrent.info.hash,
             urls=[t.url for t in test_torrent.trackers],
         )
-        print(f"Removed all trackers from {test_torrent.name}.")
+        print(f"Removed all trackers from “{test_torrent.name}”.")
 
         # 添加新的测试tracker
         client.torrents_add_trackers(
@@ -72,7 +72,7 @@ async def client_test(
 
         progress = create_progress()
         progress.start()
-        bar = progress.add_task("Waiting for all trackers to be contacted...", total=len(trackers_set))
+        bar = progress.add_task("Waiting for all trackers to be contacted", total=len(trackers_set))
 
         def check_has_data(t: Tracker):
             return t.num_downloaded != -1 or t.num_leeches != -1 or t.num_peers != -1 or t.num_seeds != -1
