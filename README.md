@@ -2,6 +2,8 @@
 
 A Python CLI tool for testing trackers powered by [typer](https://github.com/fastapi/typer)
 
+[English](README.md) | [中文](README_zh-cn.md)
+
 ## Usage
 
 ### Test trackers
