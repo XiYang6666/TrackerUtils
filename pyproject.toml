@@ -1,6 +1,6 @@
 [project]
 name = "tracker-utils"
-version = "0.1.1"
+version = "0.1.1-rev"
 description = "A Python CLI tool for testing trackers"
 keywords = ["tracker", "utils", "cli", "tu"]
 authors = [{ name = "XiYang6666", email = "1782356858@qq.com" }]
@@ -16,7 +16,7 @@ readme = "README.md"
 license = { text = "MIT" }
 
 [project.scripts]
-tu = "tracker_utils.__main__:main"
+tu = "tracker_utils.app:app"
 
 [project.urls]
 repository = "https://github.com/XiYang6666/TrackerUtils"
