@@ -7,7 +7,7 @@ import click
 import typer
 
 from ..app import app
-from ..functions.client_test import BTClientOptions, client_test
+from ..functions.client_test import ClientTestOptions, client_test
 from ..util import add_config_options, read_lines, timedelta_parser
 
 
@@ -100,7 +100,7 @@ def cmd_client_test(
     asyncio.run(
         client_test(
             urls,
-            BTClientOptions(url=url, user=username, pwd=password, torrent=torrent),
+            ClientTestOptions(url=url, user=username, pwd=password, torrent=torrent),
             output_path,
             fast_mode=fast_mode,
             polling_interval=polling_interval.total_seconds(),

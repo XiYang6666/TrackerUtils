@@ -9,7 +9,7 @@ from rich import print
 from .. import config
 from ..util import create_progress, create_rate_str, fail, write_lines
 
-__all__ = ["BTClientOptions", "client_test"]
+__all__ = ["ClientTestOptions", "client_test"]
 
 
 def get_torrent(client: Client, torrent: str):
@@ -21,7 +21,7 @@ def get_torrent(client: Client, torrent: str):
 
 
 @dataclass
-class BTClientOptions:
+class ClientTestOptions:
     url: str
     torrent: str
     user: Optional[str] = None
@@ -30,7 +30,7 @@ class BTClientOptions:
 
 async def client_test(
     trackers: list[str],
-    client_options: BTClientOptions,
+    client_options: ClientTestOptions,
     output_path: Path,
     *,
     fast_mode: bool = True,

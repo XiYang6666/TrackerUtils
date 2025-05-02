@@ -32,7 +32,7 @@ def provider_file_checker(ctx: click.Context, value: Optional[Path]):
     return value
 
 
-@app.command("test")
+@app.command("test", help="Test trackers")
 @add_config_options()
 def cmd_test(
     tracker_provider_urls: List[str] = typer.Option(

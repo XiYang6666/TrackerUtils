@@ -10,7 +10,7 @@ tu test [OPTIONS]
 ```                                                                                      
 
 #### Options
-| Option                  | Short | Close            | Type    | Description                                    |
+| Option                  | Short | Off              | Type    | Description                                    |
 | ----------------------- | ----- | ---------------- | ------- | ---------------------------------------------- |
 | --tracker-provider-urls | -u    |                  | TEXT    | Tracker provider urls                          |
 | --tracker-provider-file | -f    |                  | PATH    | Tracker provider file [default: None]          |
@@ -34,7 +34,7 @@ tu client-test [OPTIONS] URL TORRENT
 | * torrent | TEXT | Torrent name or hash [default: None] [required]          |
 
 #### Options
-| Option             | Short | Close       | Type  | Description                                                                             |
+| Option             | Short | Off         | Type  | Description                                                                             |
 | ------------------ | ----- | ----------- | ----- | --------------------------------------------------------------------------------------- |
 | --trackers-urls    | -t    |             | TEXT  | List of trackers urls                                                                   |
 | --tackers-file     | -f    |             | PATH  | Path to the file containing trackers [default: None]                                    |
@@ -46,3 +46,22 @@ tu client-test [OPTIONS] URL TORRENT
 | --show-failed      |       |             |       | Show failed tasks                                                                       |
 | --timeout          | -t    |             | FLOAT | Timeout in seconds for all trackers [default: 1800.0]                                   |
 | --help             |       |             |       | Show this message and exit.                                                             |
+
+### Set Trackers for qbittorrent client
+```bash
+tu set-trackers [OPTIONS] URL
+```
+
+#### Arguments
+| Argument | type | Description                                              |
+| -------- | ---- | -------------------------------------------------------- |
+| * url    | TEXT | Url of the qbittorrent web ui [default: None] [required] |
+
+#### Options
+| Option          | Short | Type | Description                                                                         |
+| --------------- | ----- | ---- | ----------------------------------------------------------------------------------- |
+| --username      | -u    | TEXT | Username for the qbittorrent client [env var: QBITTORRENT_USERNAME] [default: None] |
+| --password      | -p    | TEXT | Password for the qbittorrent client [env var: QBITTORRENT_PASSWORD] [default: None] |
+| --trackers-urls | -t    | TEXT | List of trackers urls                                                               |
+| --tackers-file  | -f    | PATH | Path to the file containing trackers [default: None]                                |
+| --help          |       |      | Show this message and exit.                                                         |
