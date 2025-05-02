@@ -13,6 +13,7 @@ from ..utils.commands import add_config_options
 cmd = typer.Typer(
     name="client-test",
     help="Test Trackers by a qbittorrent client",
+    rich_help_panel="Tracker Tester",
 )
 
 
@@ -38,7 +39,7 @@ def tracker_file_checker(ctx: click.Context, value: Optional[Path]):
     return value
 
 
-@cmd.command()
+@cmd.callback()
 @add_config_options(
     hides=["retry_times"],
     defaults={"timeout": typer.Option("5m", "--timeout", "-t", help="Timeout for contact all trackers", click_type=timedelta_parser)},

@@ -28,7 +28,7 @@ build-backend = "pdm.backend"
 
 [tool.pdm.scripts]
 dev = "python -m src.tracker_utils"
-build-docs = "typer tracker_utils.app utils docs --output docs/typer_helper.md --name TrackerUtils"
+build-docs = "typer tracker_utils.app utils docs --output docs/typer_helper.md --name tu --title TrackerUtils"
 
 [tool.ruff]
 line-length = 150

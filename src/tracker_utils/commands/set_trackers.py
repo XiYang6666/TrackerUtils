@@ -10,10 +10,11 @@ from ..utils.base import read_lines
 cmd = typer.Typer(
     name="set-trackers",
     help="Set trackers for qbittorrent client",
+    rich_help_panel="Bt Client Utils",
 )
 
 
-@cmd.command()
+@cmd.callback()
 def cmd_set_trackers(
     url: str = typer.Argument(..., help="Url of the qbittorrent web ui"),
     username: Optional[str] = typer.Option(

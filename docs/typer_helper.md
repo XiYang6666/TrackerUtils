@@ -1,9 +1,9 @@
-# `TrackerUtils`
+# TrackerUtils
 
 **Usage**:
 
 ```console
-$ TrackerUtils [OPTIONS] COMMAND [ARGS]...
+$ tu [OPTIONS] COMMAND [ARGS]...
 ```
 
 **Options**:
@@ -20,30 +20,14 @@ $ TrackerUtils [OPTIONS] COMMAND [ARGS]...
 * `client-test`: Test Trackers by a qbittorrent client
 * `set-trackers`: Set trackers for qbittorrent client
 
-## `TrackerUtils test`
+## `tu test`
 
 Test trackers
 
 **Usage**:
 
 ```console
-$ TrackerUtils test [OPTIONS] COMMAND [ARGS]...
-```
-
-**Options**:
-
-* `--help`: Show this message and exit.
-
-**Commands**:
-
-* `wrapper`
-
-### `TrackerUtils test wrapper`
-
-**Usage**:
-
-```console
-$ TrackerUtils test wrapper [OPTIONS]
+$ tu test [OPTIONS] COMMAND [ARGS]...
 ```
 
 **Options**:
@@ -60,30 +44,14 @@ $ TrackerUtils test wrapper [OPTIONS]
 * `-t, --timeout TIMEDELTA`: Timeout for each task  [default: 10s]
 * `--help`: Show this message and exit.
 
-## `TrackerUtils client-test`
+## `tu client-test`
 
 Test Trackers by a qbittorrent client
 
 **Usage**:
 
 ```console
-$ TrackerUtils client-test [OPTIONS] COMMAND [ARGS]...
-```
-
-**Options**:
-
-* `--help`: Show this message and exit.
-
-**Commands**:
-
-* `wrapper`
-
-### `TrackerUtils client-test wrapper`
-
-**Usage**:
-
-```console
-$ TrackerUtils client-test wrapper [OPTIONS] URL TORRENT
+$ tu client-test [OPTIONS] URL TORRENT COMMAND [ARGS]...
 ```
 
 **Arguments**:
@@ -106,30 +74,14 @@ $ TrackerUtils client-test wrapper [OPTIONS] URL TORRENT
 * `-t, --timeout TIMEDELTA`: Timeout for contact all trackers  [default: 5m]
 * `--help`: Show this message and exit.
 
-## `TrackerUtils set-trackers`
+## `tu set-trackers`
 
 Set trackers for qbittorrent client
 
 **Usage**:
 
 ```console
-$ TrackerUtils set-trackers [OPTIONS] COMMAND [ARGS]...
-```
-
-**Options**:
-
-* `--help`: Show this message and exit.
-
-**Commands**:
-
-* `cmd-set-trackers`
-
-### `TrackerUtils set-trackers cmd-set-trackers`
-
-**Usage**:
-
-```console
-$ TrackerUtils set-trackers cmd-set-trackers [OPTIONS] URL
+$ tu set-trackers [OPTIONS] URL COMMAND [ARGS]...
 ```
 
 **Arguments**:

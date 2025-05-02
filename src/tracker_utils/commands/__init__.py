@@ -25,13 +25,13 @@ def load_commands(app: typer.Typer):
 
     app.add_typer(
         test.cmd,
-        rich_help_panel="Tracker Tester",
+        # rich_help_panel="Tracker Tester",
     )
     app.add_typer(
         client_test.cmd,
-        rich_help_panel="Tracker Tester",
+        # rich_help_panel="Tracker Tester",
     )
     app.add_typer(
         set_trackers.cmd,
-        rich_help_panel="Bt Client Utils",
+        # rich_help_panel="Bt Client Utils",
     )
