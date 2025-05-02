@@ -3,7 +3,6 @@ from importlib.metadata import version
 import typer
 
 from ..utils.commands import add_config_options
-from ..utils.output import print
 from . import (
     client_test,
     set_trackers,
@@ -20,7 +19,7 @@ def version_callback(value: bool):
 
 def load_commands(app: typer.Typer):
     @app.callback()
-    @add_config_options(hides=["show_failed", "retry_times", "timeout"])
+    @add_config_options(hides=["show_failed", "rich_output", "retry_times", "timeout"])
     def main(version: bool = typer.Option(False, "--version", "-v", help="Show version and exit.", callback=version_callback)): ...
 
     app.add_typer(
