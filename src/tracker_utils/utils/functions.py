@@ -48,7 +48,7 @@ async def download_trackers_list(tracker_provider_urls: set[str]):
 
 async def load_all_tracker(urls: list[str]) -> tuple[list[str], dict[str, list[str]]]:
     results = {u for u in urls if not u.startswith("[PROVIDER]")}
-    provider_map = {"[OPTIONS]": list(results)}
+    provider_map = {"[OPTION URLS]": list(results)}
     providers = {u.removeprefix("[PROVIDER]") for u in urls if u.startswith("[PROVIDER]")}
     if providers:
         print("Downloading trackers from provider urls...")
