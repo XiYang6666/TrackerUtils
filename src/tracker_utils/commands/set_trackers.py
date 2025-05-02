@@ -1,3 +1,4 @@
+import asyncio
 from pathlib import Path
 from typing import List, Optional
 
@@ -5,10 +6,14 @@ import typer
 
 from ..app import app
 from ..functions.set_tracker import BtClientOptions, set_tracker
-from ..util import read_lines
+from ..utils.base import read_lines
 
 
-@app.command("set-trackers", help="Set trackers for qbittorrent client")
+@app.command(
+    "set-trackers",
+    help="Set trackers for qbittorrent client",
+    rich_help_panel="Client Utils",
+)
 def cmd_set_trackers(
     url: str = typer.Argument(..., help="Url of the qbittorrent web ui"),
     username: Optional[str] = typer.Option(
@@ -47,8 +52,10 @@ def cmd_set_trackers(
     urls = trackers_urls
     if tackers_file:
         urls += read_lines(tackers_file.read_text())
-    set_tracker(
-        urls,
-        BtClientOptions(url=url, user=username, pwd=password),
-        append,
+    asyncio.run(
+        set_tracker(
+            urls,
+            BtClientOptions(url=url, user=username, pwd=password),
+            append,
+        )
     )

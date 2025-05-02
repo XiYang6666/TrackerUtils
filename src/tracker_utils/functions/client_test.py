@@ -6,7 +6,9 @@ from typing import Optional
 from qbittorrentapi import Client, Tracker  # 你妈的类型能不能好好写?
 
 from .. import config
-from ..util import create_progress, create_rate_str, fail, print, write_lines
+from ..utils.base import write_lines
+from ..utils.functions import load_all_tracker, show_test_result
+from ..utils.output import create_progress, fail, print
 
 __all__ = ["ClientTestOptions", "client_test"]
 
@@ -28,7 +30,7 @@ class ClientTestOptions:
 
 
 async def client_test(
-    trackers: list[str],
+    tracker_urls: list[str],
     client_options: ClientTestOptions,
     output_path: Path,
     *,
@@ -36,7 +38,8 @@ async def client_test(
     polling_interval: float = 3.0,
     yes_all: bool = False,
 ):
-    trackers_set = set(trackers)
+    all_trackers, provider_map = await load_all_tracker(tracker_urls)
+
     # 连接qbittorrent客户端
     print(f"Connecting to qBittorrent web api (url: {client_options.url}, user: {client_options.user})...")
     client = Client(host=client_options.url, username=client_options.user, password=client_options.pwd)
@@ -62,17 +65,17 @@ async def client_test(
         # 添加新的测试tracker
         client.torrents_add_trackers(
             test_torrent.hash,
-            urls=trackers_set,
+            urls=all_trackers,
         )
-        print(f"Added {len(trackers_set)} trackers to “{test_torrent.name}”.")
+        print(f"Added {len(all_trackers)} trackers to “{test_torrent.name}”.")
 
         # 等待tracker生效
-        contracted_trackers = set()
-        available_trackers = set()
+        contracted_trackers = []
+        available_trackers = []
 
         progress = create_progress()
         progress.start()
-        bar = progress.add_task("Waiting for all trackers to be contacted", total=len(trackers_set))
+        bar = progress.add_task("Waiting for all trackers to be contacted", total=len(all_trackers))
 
         def check_has_data(t: Tracker):
             return t.num_downloaded != -1 or t.num_leeches != -1 or t.num_peers != -1 or t.num_seeds != -1
@@ -85,39 +88,38 @@ async def client_test(
                     fail(f"Torrent “{client_options.torrent}” not found.")
                     continue
                 for t in torrent.trackers:
-                    if t.url not in trackers_set:
+                    if t.url not in all_trackers:
+                        continue
+                    elif t.url in contracted_trackers:
                         continue
                     elif t.status == 2:
-                        contracted_trackers.add(t.url)
-                        available_trackers.add(t.url)
+                        contracted_trackers.append(t.url)
+                        available_trackers.append(t.url)
                     elif t.status == 3 and check_has_data(t):
-                        contracted_trackers.add(t.url)
-                        available_trackers.add(t.url)
+                        contracted_trackers.append(t.url)
+                        available_trackers.append(t.url)
                     elif t.status == 3 and t.msg != "" and fast_mode:
                         if t.url not in contracted_trackers:
                             fail(f"Tracker “{t.url}” is not contactable(updating but failed): “{t.msg}”")
-                        contracted_trackers.add(t.url)
+                        contracted_trackers.append(t.url)
                     elif t.status == 4:
                         if t.url not in contracted_trackers:
                             fail(f"Tracker “{t.url}” is not contactable(not working): “{t.msg}”")
-                        contracted_trackers.add(t.url)
+                        contracted_trackers.append(t.url)
 
                 progress.update(bar, completed=len(contracted_trackers))
-                if contracted_trackers == trackers_set:
+                if len(contracted_trackers) == len(all_trackers):
                     print("All trackers are contacted.")
                     break
 
         await asyncio.wait_for(wait_trackers(), timeout=config.timeout)
-        progress.stop()
-        print(f"Finished. {create_rate_str(len(available_trackers), len(trackers_set))} trackers are available.")
+        show_test_result(all_trackers, available_trackers, provider_map)
         if not yes_all:
-            input("Press enter to continue.")
+            print("press enter to continue...")
     except asyncio.TimeoutError:
-        progress.stop()
-        print("Timeouted while waiting for trackers to be contacted.")
-        print(f"Finished. {create_rate_str(len(available_trackers), len(trackers_set))} trackers are available.")
+        show_test_result(all_trackers, available_trackers, provider_map)
         if not yes_all:
-            input("Press enter to continue.")
+            print("press enter to continue...")
     except Exception as e:
         progress.stop()
         raise e

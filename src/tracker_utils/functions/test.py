@@ -2,53 +2,19 @@ import asyncio
 import ipaddress
 import json
 from pathlib import Path
-from typing import Optional, TypedDict
+from typing import Optional
 from urllib.parse import urlparse
 
 import aiodns
 import httpx
 
 from .. import config
-from ..util import create_progress, create_rate_str, fail, if_sort, print, read_lines, retry_factory, write_lines
+from ..utils.base import create_rate_str, if_sort, write_lines
+from ..utils.decorators import retry_factory
+from ..utils.functions import load_all_tracker, show_test_result
+from ..utils.output import create_progress, fail, print
 
 __all__ = ["test"]
-
-
-async def download_trackers_list(tracker_provider_urls: list[str]):
-    class GetTrackerListResult(TypedDict):
-        url: str
-        trackers: list[str]
-
-    progress = create_progress()
-    bar = progress.add_task("Downloading tracker lists", total=len(tracker_provider_urls))
-
-    @retry_factory(progress, bar)
-    async def get_tracker_list(client: httpx.AsyncClient, url: str) -> Optional[GetTrackerListResult]:
-        try:
-            response = await client.get(url)
-            response.raise_for_status()
-            tracker_list = read_lines(response.text)
-            print(f"Downloaded {len(tracker_list)} tracker urls from “{url}”.")
-            return {"url": url, "trackers": tracker_list}
-        except Exception as e:
-            fail(f"Failed to download “{url}”: {e}.")
-            return None
-
-    async with httpx.AsyncClient(timeout=config.timeout) as client:
-        progress.start()
-        tasks = [get_tracker_list(client, url) for url in tracker_provider_urls]
-        results = await asyncio.gather(*tasks)
-        progress.stop()
-        all_trackers: set[str] = set()
-        provider_map: dict[str, list[str]] = {}
-        for result in results:
-            if result is None:
-                continue
-            url = result["url"]
-            trackers = result["trackers"]
-            all_trackers.update(trackers)
-            provider_map[url] = trackers
-        return all_trackers, provider_map
 
 
 def separate_trackers_by_protocol(trackers: list[str]) -> dict[str, list[str]]:
@@ -136,7 +102,7 @@ async def test_udp_trackers(trackers: list[str]):
 
 
 async def test(
-    tracker_provider_urls: list[str],
+    tracker_urls: list[str],
     *,
     output_txt_dir: Optional[Path] = None,
     output_json_path: Optional[Path] = None,
@@ -144,12 +110,7 @@ async def test(
     sort: bool = True,
 ):
     # 下载tracker列表
-    print("Downloading trackers from provider urls...")
-    all_trackers, provider_map = await download_trackers_list(tracker_provider_urls)
-    print(
-        f"Download finished. {create_rate_str(len(provider_map), len(tracker_provider_urls))} provider available, "
-        f"Total {len(all_trackers)} trackers found."
-    )
+    all_trackers, provider_map = await load_all_tracker(tracker_urls)
 
     # 按协议分类
     print("Separating trackers by protocol...")
@@ -168,10 +129,7 @@ async def test(
     available_udp_trackers = await test_udp_trackers(udp_trackers)
     print(f"Finished. {create_rate_str(len(available_udp_trackers), len(udp_trackers))} udp trackers available.")
     available_trackers = available_http_trackers + available_udp_trackers
-    print(f"Test finished. {create_rate_str(len(available_trackers), len(all_trackers))} trackers available.")
-    for provider, trackers in provider_map.items():
-        available_counts = len([t for t in trackers if t in available_trackers])
-        print(f"Availability of “{provider}”: {create_rate_str(available_counts, len(trackers))}.")
+    show_test_result(all_trackers, available_trackers, provider_map)
 
     # 输出结果
     # txt

@@ -3,7 +3,8 @@ from importlib.metadata import version
 import typer
 
 from ..app import app
-from ..util import add_config_options, print
+from ..utils.commands import add_config_options
+from ..utils.output import print
 
 
 def version_callback(value: bool):
@@ -19,8 +20,8 @@ def main(version: bool = typer.Option(False, "--version", "-v", help="Show versi
 
 
 def load_commands():
-    from . import (
+    from . import (  # noqa: I001
+        test,  # noqa: F401
         client_test,  # noqa: F401
         set_trackers,  # noqa: F401
-        test,  # noqa: F401
     )
