@@ -1,5 +1,4 @@
 import inspect
-import re
 from dataclasses import dataclass
 from datetime import timedelta
 from pathlib import Path
@@ -74,14 +73,6 @@ def retry_factory(progress: Progress, taskid: TaskID):
         return wrapper
 
     return decorator
-
-
-def infinite_loop_factory[T](func: Callable[..., Coroutine[Any, Any, T]]) -> Callable[..., Coroutine[Any, Any, T]]:
-    async def wrapper(*args, **kwargs):
-        while True:
-            await func(*args, **kwargs)
-
-    return wrapper
 
 
 def merge_params(func2: Callable):
@@ -206,23 +197,17 @@ def add_config_options(hides: list[ConfigKeys] = [], defaults: dict[ConfigKeys, 
     return decorator
 
 
-MILLISECOND_PATTERN = re.compile(r"^(?:\d+(?:.\d*)?|\.\d+)ms$")
-SECOND_PATTEN = re.compile(r"^(?:\d+(?:.\d*)?|\.\d+)s$")
-MINUTE_PATTERN = re.compile(r"^(?:\d+(?:.\d*)?|\.\d+)m$")
-HOUR_PATTERN = re.compile(r"^(?:\d+(?:.\d*)?|\.\d+)h$")
-
-
 class TimedeltaParser(click.ParamType):
     name = "timedelta"
 
-    def convert(self, value: str, param, ctx: click.Context) -> timedelta:
-        if MILLISECOND_PATTERN.match(value):
+    def convert(self, value: str, param, ctx) -> timedelta:
+        if value.endswith("ms"):
             return timedelta(milliseconds=float(value[:-2]))
-        if SECOND_PATTEN.match(value):
+        if value.endswith("s"):
             return timedelta(seconds=float(value[:-1]))
-        if MINUTE_PATTERN.match(value):
+        if value.endswith("m"):
             return timedelta(minutes=float(value[:-1]))
-        if HOUR_PATTERN.match(value):
+        if value.endswith("h"):
             return timedelta(hours=float(value[:-1]))
         return timedelta(seconds=float(value))
 
