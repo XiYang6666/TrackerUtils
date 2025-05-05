@@ -1,6 +1,6 @@
 [project]
 name = "tracker-utils"
-version = "0.1.2"
+version = "0.1.3"
 description = "A Python CLI tool for testing trackers"
 keywords = ["tracker", "utils", "cli", "tu"]
 authors = [{ name = "XiYang6666", email = "1782356858@qq.com" }]
