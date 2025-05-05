@@ -87,9 +87,6 @@ async def client_test(
         while True:
             await asyncio.sleep(polling_interval)
             torrent = get_torrent(client, client_options.torrent)
-            if not torrent:
-                fail(f"Torrent “{client_options.torrent}” not found.")
-                continue
             for t in get_tracker_infos(torrent):
                 if t.url not in trackers:
                     continue
